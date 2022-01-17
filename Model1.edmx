@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="KinozalSet" EntityType="Model1.Store.KinozalSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="seansSet" EntityType="Model1.Store.seansSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="BiletSet" EntityType="Model1.Store.BiletSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="polzovatelSet" EntityType="Model1.Store.polzovatelSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="KinoteatrSet" EntityType="Model1.Store.KinoteatrSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="kinoseans_ass" Association="Model1.Store.kinoseans_ass">
+      <End Role="Kinozal" EntitySet="KinozalSet" />
+      <End Role="seans" EntitySet="seansSet" />
+    </AssociationSet>
+    <AssociationSet Name="Bilet_polz" Association="Model1.Store.Bilet_polz">
+      <End Role="polzovatel" EntitySet="polzovatelSet" />
+      <End Role="Bilet" EntitySet="BiletSet" />
+    </AssociationSet>
+    <AssociationSet Name="Biletseans" Association="Model1.Store.Biletseans">
+      <End Role="Bilet" EntitySet="BiletSet" />
+      <End Role="seans" EntitySet="seansSet" />
+    </AssociationSet>
+    <AssociationSet Name="KinoteatrKinozal" Association="Model1.Store.KinoteatrKinozal">
+      <End Role="Kinoteatr" EntitySet="KinoteatrSet" />
+      <End Role="Kinozal" EntitySet="KinozalSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="KinozalSet">
+    <Key>
+      <PropertyRef Name="Id_kinozal" />
+    </Key>
+    <Property Name="Id_kinozal" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="number" Type="smallint" Nullable="false" />
+    <Property Name="capasity" Type="int" Nullable="false" />
+    <Property Name="KinoteatrId_kinoteatr" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="seansSet">
+    <Key>
+      <PropertyRef Name="Id_seans" />
+    </Key>
+    <Property Name="Id_seans" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tame_date" Type="datetime" Nullable="false" />
+    <Property Name="KinozalId_kinozal" Type="int" Nullable="false" />
+    <Property Name="BiletId_bilet" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BiletSet">
+    <Key>
+      <PropertyRef Name="Id_bilet" />
+    </Key>
+    <Property Name="Id_bilet" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="polzovatelId_polzovatel" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="polzovatelSet">
+    <Key>
+      <PropertyRef Name="Id_polzovatel" />
+    </Key>
+    <Property Name="Id_polzovatel" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FIO" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="number_phone" Type="bigint" Nullable="false" />
+    <Property Name="email" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="KinoteatrSet">
+    <Key>
+      <PropertyRef Name="Id_kinoteatr" />
+    </Key>
+    <Property Name="Id_kinoteatr" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="kinoseans_ass">
+    <End Role="Kinozal" Type="Model1.Store.KinozalSet" Multiplicity="1" />
+    <End Role="seans" Type="Model1.Store.seansSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kinozal">
+        <PropertyRef Name="Id_kinozal" />
+      </Principal>
+      <Dependent Role="seans">
+        <PropertyRef Name="KinozalId_kinozal" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Bilet_polz">
+    <End Role="polzovatel" Type="Model1.Store.polzovatelSet" Multiplicity="1" />
+    <End Role="Bilet" Type="Model1.Store.BiletSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="polzovatel">
+        <PropertyRef Name="Id_polzovatel" />
+      </Principal>
+      <Dependent Role="Bilet">
+        <PropertyRef Name="polzovatelId_polzovatel" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Biletseans">
+    <End Role="Bilet" Type="Model1.Store.BiletSet" Multiplicity="1" />
+    <End Role="seans" Type="Model1.Store.seansSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bilet">
+        <PropertyRef Name="Id_bilet" />
+      </Principal>
+      <Dependent Role="seans">
+        <PropertyRef Name="BiletId_bilet" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="KinoteatrKinozal">
+    <End Role="Kinoteatr" Type="Model1.Store.KinoteatrSet" Multiplicity="1" />
+    <End Role="Kinozal" Type="Model1.Store.KinozalSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kinoteatr">
+        <PropertyRef Name="Id_kinoteatr" />
+      </Principal>
+      <Dependent Role="Kinozal">
+        <PropertyRef Name="KinoteatrId_kinoteatr" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="KinozalSet" EntityType="Model1.Kinozal" />
+          <EntitySet Name="seansSet" EntityType="Model1.seans" />
+          <AssociationSet Name="kinoseans_ass" Association="Model1.kinoseans_ass">
+            <End Role="Kinozal" EntitySet="KinozalSet" />
+            <End Role="seans" EntitySet="seansSet" />
+          </AssociationSet>
+          <EntitySet Name="BiletSet" EntityType="Model1.Bilet" />
+          <EntitySet Name="polzovatelSet" EntityType="Model1.polzovatel" />
+          <AssociationSet Name="Bilet_polz" Association="Model1.Bilet_polz">
+            <End Role="polzovatel" EntitySet="polzovatelSet" />
+            <End Role="Bilet" EntitySet="BiletSet" />
+          </AssociationSet>
+          <AssociationSet Name="Biletseans" Association="Model1.Biletseans">
+            <End Role="Bilet" EntitySet="BiletSet" />
+            <End Role="seans" EntitySet="seansSet" />
+          </AssociationSet>
+          <EntitySet Name="KinoteatrSet" EntityType="Model1.Kinoteatr" />
+          <AssociationSet Name="KinoteatrKinozal" Association="Model1.KinoteatrKinozal">
+            <End Role="Kinoteatr" EntitySet="KinoteatrSet" />
+            <End Role="Kinozal" EntitySet="KinozalSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Kinozal">
+          <Key>
+            <PropertyRef Name="Id_kinozal" />
+          </Key>
+          <Property Name="Id_kinozal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="number" Type="Int16" Nullable="false" />
+          <Property Name="capasity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="seans" Relationship="Model1.kinoseans_ass" FromRole="Kinozal" ToRole="seans" />
+          <NavigationProperty Name="Kinoteatr" Relationship="Model1.KinoteatrKinozal" FromRole="Kinozal" ToRole="Kinoteatr" />
+          <Property Name="KinoteatrId_kinoteatr" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="seans">
+          <Key>
+            <PropertyRef Name="Id_seans" />
+          </Key>
+          <Property Name="Id_seans" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tame_date" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Kinozal" Relationship="Model1.kinoseans_ass" FromRole="seans" ToRole="Kinozal" />
+          <Property Name="KinozalId_kinozal" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bilet" Relationship="Model1.Biletseans" FromRole="seans" ToRole="Bilet" />
+          <Property Name="BiletId_bilet" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="kinoseans_ass">
+          <End Type="Model1.Kinozal" Role="Kinozal" Multiplicity="1" />
+          <End Type="Model1.seans" Role="seans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kinozal">
+              <PropertyRef Name="Id_kinozal" />
+            </Principal>
+            <Dependent Role="seans">
+              <PropertyRef Name="KinozalId_kinozal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Bilet">
+          <Key>
+            <PropertyRef Name="Id_bilet" />
+          </Key>
+          <Property Name="Id_bilet" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="polzovatel" Relationship="Model1.Bilet_polz" FromRole="Bilet" ToRole="polzovatel" />
+          <Property Name="polzovatelId_polzovatel" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="seans" Relationship="Model1.Biletseans" FromRole="Bilet" ToRole="seans" />
+        </EntityType>
+        <EntityType Name="polzovatel">
+          <Key>
+            <PropertyRef Name="Id_polzovatel" />
+          </Key>
+          <Property Name="Id_polzovatel" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FIO" Type="String" Nullable="false" />
+          <Property Name="number_phone" Type="Int64" Nullable="false" />
+          <Property Name="email" Type="String" Nullable="false" />
+          <NavigationProperty Name="Bilet" Relationship="Model1.Bilet_polz" FromRole="polzovatel" ToRole="Bilet" />
+        </EntityType>
+        <Association Name="Bilet_polz">
+          <End Type="Model1.polzovatel" Role="polzovatel" Multiplicity="1" />
+          <End Type="Model1.Bilet" Role="Bilet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="polzovatel">
+              <PropertyRef Name="Id_polzovatel" />
+            </Principal>
+            <Dependent Role="Bilet">
+              <PropertyRef Name="polzovatelId_polzovatel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Biletseans">
+          <End Type="Model1.Bilet" Role="Bilet" Multiplicity="1" />
+          <End Type="Model1.seans" Role="seans" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bilet">
+              <PropertyRef Name="Id_bilet" />
+            </Principal>
+            <Dependent Role="seans">
+              <PropertyRef Name="BiletId_bilet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Kinoteatr">
+          <Key>
+            <PropertyRef Name="Id_kinoteatr" />
+          </Key>
+          <Property Name="Id_kinoteatr" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Kinozal" Relationship="Model1.KinoteatrKinozal" FromRole="Kinoteatr" ToRole="Kinozal" />
+        </EntityType>
+        <Association Name="KinoteatrKinozal">
+          <End Type="Model1.Kinoteatr" Role="Kinoteatr" Multiplicity="1" />
+          <End Type="Model1.Kinozal" Role="Kinozal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kinoteatr">
+              <PropertyRef Name="Id_kinoteatr" />
+            </Principal>
+            <Dependent Role="Kinozal">
+              <PropertyRef Name="KinoteatrId_kinoteatr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="KinozalSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Kinozal)">
+        <MappingFragment StoreEntitySet="KinozalSet">
+          <ScalarProperty Name="Id_kinozal" ColumnName="Id_kinozal" />
+          <ScalarProperty Name="number" ColumnName="number" />
+          <ScalarProperty Name="capasity" ColumnName="capasity" />
+          <ScalarProperty Name="KinoteatrId_kinoteatr" ColumnName="KinoteatrId_kinoteatr" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="seansSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.seans)">
+        <MappingFragment StoreEntitySet="seansSet">
+          <ScalarProperty Name="Id_seans" ColumnName="Id_seans" />
+          <ScalarProperty Name="tame_date" ColumnName="tame_date" />
+          <ScalarProperty Name="KinozalId_kinozal" ColumnName="KinozalId_kinozal" />
+          <ScalarProperty Name="BiletId_bilet" ColumnName="BiletId_bilet" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BiletSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Bilet)">
+        <MappingFragment StoreEntitySet="BiletSet">
+          <ScalarProperty Name="Id_bilet" ColumnName="Id_bilet" />
+          <ScalarProperty Name="polzovatelId_polzovatel" ColumnName="polzovatelId_polzovatel" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="polzovatelSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.polzovatel)">
+        <MappingFragment StoreEntitySet="polzovatelSet">
+          <ScalarProperty Name="Id_polzovatel" ColumnName="Id_polzovatel" />
+          <ScalarProperty Name="FIO" ColumnName="FIO" />
+          <ScalarProperty Name="number_phone" ColumnName="number_phone" />
+          <ScalarProperty Name="email" ColumnName="email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="KinoteatrSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Kinoteatr)">
+        <MappingFragment StoreEntitySet="KinoteatrSet">
+          <ScalarProperty Name="Id_kinoteatr" ColumnName="Id_kinoteatr" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
